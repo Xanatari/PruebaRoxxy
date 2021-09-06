@@ -27,7 +27,7 @@ public class InvoiceService implements IInvoiceService {
     }
 
     @Override
-    public void registerRecord(InvoiceGenericRequest invoiceGenericRequest) {
+    public int registerRecord(InvoiceGenericRequest invoiceGenericRequest) {
 
         LOGGER.debug("Start register recor new invoice for this national id {}", invoiceGenericRequest.getNationalId());
         var facturaEntity = new FacturaEntity();
@@ -37,8 +37,8 @@ public class InvoiceService implements IInvoiceService {
         facturaEntity.setStatus(Optional.of(invoiceGenericRequest.getStatus()).orElse(InvoiceStatus.PENDING.getInvoiceStatusCode()));
         facturaEntity.setFechaRegistro(new Timestamp(new Date().getTime()));
 
-        iFacturaEntity.save(facturaEntity);
+       var save = iFacturaEntity.save(facturaEntity);
 
-
+        return save.getIdFactura();
     }
 }
