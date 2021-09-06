@@ -10,5 +10,5 @@ import org.springframework.http.ResponseEntity;
 public interface IPayerController {
 
     ResponseEntity<Object> registerNewPayer( PayerGenericRequest payerGenericRequest);
-    ResponseEntity<Object> detailByPayerId( PayerGenericRequest payerGenericRequest);
+    ResponseEntity<Object> detailByPayerId( PayerGenericRequest payerGenericRequest,int invoiceId);
 }
