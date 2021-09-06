@@ -3,5 +3,5 @@ package com.neivor.prueba.roxxy.service.contracts;
 import com.neivor.prueba.roxxy.dtos.request.InvoiceGenericRequest;
 
 public interface IInvoiceService {
-    void registerRecord(InvoiceGenericRequest invoiceGenericRequest);
+    int registerRecord(InvoiceGenericRequest invoiceGenericRequest);
 }
