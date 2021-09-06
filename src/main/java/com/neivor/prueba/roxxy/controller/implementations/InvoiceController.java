@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/invoice", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,6 +31,23 @@ public class InvoiceController implements IInvoiceController {
     @Override
     @PostMapping(path = "/new")
     public ResponseEntity<Object> registerNewInvoice(@RequestBody InvoiceGenericRequest invoiceGenericRequest) {
+
+        LOGGER.info("Start save record to new invoice");
+
+        return new ResponseEntity<>(gson.toJson(NeivorResponse.builder()
+                .rc("0")
+                .msg("OK")
+                .data(
+                        InvocieResponse.builder()
+                                .invoiceId(iInvoiceService.registerRecord(invoiceGenericRequest))
+                                .build())
+                .build()
+        ), HttpStatus.OK);
+    }
+
+    @Override
+    @GetMapping(path = "/detail")
+    public ResponseEntity<Object> detailByInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest) {
 
         LOGGER.info("Start save record to new invoice");
 
