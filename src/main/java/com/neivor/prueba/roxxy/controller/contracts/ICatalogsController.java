@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 public interface ICatalogsController {
 
     ResponseEntity<Object> registerNewCatalog(Catalogtype catalogtype, InvoiceGenericRequest invoiceGenericRequest);
+
     ResponseEntity<Object> getAllcatalogs();
+
     ResponseEntity<Object> getdetailByCatalog();
 }
