@@ -6,13 +6,24 @@ import java.util.Objects;
 @Entity
 @Table(name = "DETALLE_FACTURA")
 public class DetalleFacturaEntity {
+
+    @Id
+    @SequenceGenerator(
+            name = "invoice_detail_sequence",
+            sequenceName = "invoice_detail_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "invoice_detail_sequence"
+    )
+    @Column(name = "ID_DETALLE")
     private int idDetalle;
     private String observaciones;
     private int numeroFactura;
     private int tipoServicio;
 
-    @Id
-    @Column(name = "ID_DETALLE")
+
     public int getIdDetalle() {
         return idDetalle;
     }
