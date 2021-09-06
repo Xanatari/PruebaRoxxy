@@ -94,4 +94,28 @@ public class InvoiceService implements IInvoiceService {
             throw e;
         }
     }
+
+    @Override
+    public void reverseInvoice(InvoiceGenericRequest invoiceGenericRequest) throws InvocieNotFoundException {
+        try{
+            LOGGER.info("Strat get Payer detail by InvoiceId");
+            var iFactura = iFacturaEntity.findById(invoiceGenericRequest.getInvoiceId());
+            if(!iFactura.isPresent()){
+                LOGGER.error("Error to optain detail for this Invoice id {}", invoiceGenericRequest.getInvoiceId());
+                throw new InvocieNotFoundException("Invoice Id not found");
+            }
+            var f = iFactura.get();
+
+            f.setStatus(InvoiceStatus.REVERSE_PAY.getInvoiceStatusCode());
+            iFacturaEntity.save(f);
+
+        }catch (InvocieNotFoundException invocieNotFoundException){
+            LOGGER.error("Error to register the Payer info ");
+            throw invocieNotFoundException;
+        }
+        catch (Exception e){
+            LOGGER.error("Generic error to register payer info");
+            throw e;
+        }
+    }
 }
