@@ -1,6 +1,7 @@
 package com.neivor.prueba.roxxy.service.implementations;
 
 import com.neivor.prueba.roxxy.dtos.request.PayerGenericRequest;
+import com.neivor.prueba.roxxy.enums.InvoiceStatus;
 import com.neivor.prueba.roxxy.exceptions.InvoiceAmmountErrException;
 import com.neivor.prueba.roxxy.exceptions.InvoiceNationalIdNotFoundException;
 import com.neivor.prueba.roxxy.repository.contracts.IFacturaEntity;
@@ -30,8 +31,8 @@ public class PayerService implements IPayerService {
     public int registerPayer(PayerGenericRequest payerRequest) throws InvoiceNationalIdNotFoundException, InvoiceAmmountErrException {
         try{
             LOGGER.info("Strat record Payer detail");
-            var iFactura = iFacturaEntity.findByDocPagador(payerRequest.getPayerNationalId());
-            if(iFactura.isPresent()){
+            var iFactura = iFacturaEntity.findByDocPagadorAndStatus(payerRequest.getPayerNationalId(), InvoiceStatus.PENDING.getInvoiceStatusCode());
+            if(!iFactura.isPresent()){
                 LOGGER.error("This national {} id dont have a Invoice", payerRequest.getPayerNationalId());
                 throw new InvoiceNationalIdNotFoundException("We not found a Invoice for this national id ");
             }
