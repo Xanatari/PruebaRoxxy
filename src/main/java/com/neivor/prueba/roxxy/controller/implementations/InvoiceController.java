@@ -3,6 +3,7 @@ package com.neivor.prueba.roxxy.controller.implementations;
 import com.google.gson.Gson;
 import com.neivor.prueba.roxxy.controller.contracts.IInvoiceController;
 import com.neivor.prueba.roxxy.dtos.request.InvoiceGenericRequest;
+import com.neivor.prueba.roxxy.dtos.responses.InvocieResponse;
 import com.neivor.prueba.roxxy.dtos.responses.NeivorResponse;
 import com.neivor.prueba.roxxy.service.contracts.IInvoiceService;
 import org.apache.logging.log4j.LogManager;
@@ -35,8 +36,15 @@ public class InvoiceController implements IInvoiceController {
     public ResponseEntity<Object> registerNewInvoice(@RequestBody InvoiceGenericRequest invoiceGenericRequest) {
 
         LOGGER.info("Start save record to new invoice");
-        iInvoiceService.registerRecord(invoiceGenericRequest);
-        NeivorResponse neivorResponse = new NeivorResponse("00", "OK", null);
-        return new ResponseEntity<>(gson.toJson(neivorResponse), HttpStatus.OK);
+
+        return new ResponseEntity<>(gson.toJson(NeivorResponse.builder()
+                .rc("0")
+                .msg("OK")
+                .data(
+                        InvocieResponse.builder()
+                                .invoiceId(iInvoiceService.registerRecord(invoiceGenericRequest))
+                                .build())
+                .build()
+        ), HttpStatus.OK);
     }
 }
