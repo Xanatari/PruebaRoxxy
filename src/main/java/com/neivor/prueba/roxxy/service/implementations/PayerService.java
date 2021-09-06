@@ -27,7 +27,7 @@ public class PayerService implements IPayerService {
     }
 
     @Override
-    public void registerPayer(PayerGenericRequest payerRequest) throws InvoiceNationalIdNotFoundException, InvoiceAmmountErrException {
+    public int registerPayer(PayerGenericRequest payerRequest) throws InvoiceNationalIdNotFoundException, InvoiceAmmountErrException {
         try{
             LOGGER.info("Strat record Payer detail");
             var iFactura = iFacturaEntity.findByDocPagador(payerRequest.getPayerNationalId());
@@ -51,7 +51,7 @@ public class PayerService implements IPayerService {
             iPagadorEntity.save(pagador);
 
 
-           return iFactura.get().getValorFactura();
+           return iFactura.get().getIdFactura();
         }catch (InvoiceNationalIdNotFoundException invoiceNationalIdNotFoundException){
             LOGGER.error("Error to register the Payer info ");
              throw invoiceNationalIdNotFoundException;
@@ -61,8 +61,7 @@ public class PayerService implements IPayerService {
         }
         catch (Exception e){
             LOGGER.error("Generic error to register payer info");
-
+            throw e;
         }
-        LOGGER.info("Finish record Payer detail");
     }
 }
