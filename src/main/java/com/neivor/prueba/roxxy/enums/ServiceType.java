@@ -13,5 +13,5 @@ public enum ServiceType {
         this.serviceTypeDetail = serviceTypeDetail;
     }
 
-    
+
 }

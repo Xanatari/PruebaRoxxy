@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -14,6 +16,7 @@ public class InvoiceGenericRequest {
     String nationalId;
     int invoiceAmmount;
     int status;
+    List<DetailInvoiceGeneric> detailInvoiceGenericList;
     Object data;
 
 }
