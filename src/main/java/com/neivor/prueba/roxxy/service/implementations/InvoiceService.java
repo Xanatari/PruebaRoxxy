@@ -37,7 +37,7 @@ public class InvoiceService implements IInvoiceService {
         facturaEntity.setStatus(Optional.of(invoiceGenericRequest.getStatus()).orElse(InvoiceStatus.PENDING.getInvoiceStatusCode()));
         facturaEntity.setFechaRegistro(new Timestamp(new Date().getTime()));
 
-       var save = iFacturaEntity.save(facturaEntity);
+        var save = iFacturaEntity.save(facturaEntity);
 
         return save.getIdFactura();
     }
