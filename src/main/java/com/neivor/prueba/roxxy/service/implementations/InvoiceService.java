@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -33,6 +35,7 @@ public class InvoiceService implements IInvoiceService {
         facturaEntity.setValorFactura(invoiceGenericRequest.getInvoiceAmmount());
         facturaEntity.setDocPagador(invoiceGenericRequest.getNationalId());
         facturaEntity.setStatus(Optional.of(invoiceGenericRequest.getStatus()).orElse(InvoiceStatus.PENDING.getInvoiceStatusCode()));
+        facturaEntity.setFechaRegistro(new Timestamp(new Date().getTime()));
 
         iFacturaEntity.save(facturaEntity);
 
