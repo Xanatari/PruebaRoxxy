@@ -13,5 +13,6 @@ public interface IInvoiceController {
     ResponseEntity<Object> detailByInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest);
 
     ResponseEntity<Object> updateInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest);
+    ResponseEntity<Object> reverseInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest);
 
 }
