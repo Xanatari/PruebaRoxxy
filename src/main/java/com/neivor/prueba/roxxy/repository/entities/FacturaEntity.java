@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "FACTURA", schema = "TestRoxxy")
+@Table(name = "FACTURA")
 public class FacturaEntity {
     private int idFactura;
     private int valorFactura;
