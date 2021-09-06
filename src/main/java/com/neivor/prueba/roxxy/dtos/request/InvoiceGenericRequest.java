@@ -18,5 +18,6 @@ public class InvoiceGenericRequest {
     int status;
     List<DetailInvoiceGeneric> detailInvoiceGenericList;
     Object data;
+    int invoiceId;
 
 }
