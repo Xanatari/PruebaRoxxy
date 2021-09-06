@@ -1,5 +1,10 @@
 package com.neivor.prueba.roxxy.dtos.responses;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+
+@Builder
+@EqualsAndHashCode
 public class NeivorResponse {
     private String rc;
     private String msg;
