@@ -2,7 +2,9 @@ package com.neivor.prueba.roxxy.service.implementations;
 
 import com.neivor.prueba.roxxy.dtos.request.InvoiceGenericRequest;
 import com.neivor.prueba.roxxy.enums.InvoiceStatus;
+import com.neivor.prueba.roxxy.repository.contracts.IDetalleFacturaEntity;
 import com.neivor.prueba.roxxy.repository.contracts.IFacturaEntity;
+import com.neivor.prueba.roxxy.repository.entities.DetalleFacturaEntity;
 import com.neivor.prueba.roxxy.repository.entities.FacturaEntity;
 import com.neivor.prueba.roxxy.service.contracts.IInvoiceService;
 import lombok.var;
@@ -20,10 +22,13 @@ public class InvoiceService implements IInvoiceService {
     private static final Logger LOGGER = LogManager.getLogger(InvoiceService.class);
 
     IFacturaEntity iFacturaEntity;
+    IDetalleFacturaEntity iDetalleFacturaEntity;
 
     @Autowired
-    public InvoiceService(IFacturaEntity iFacturaEntity) {
+    public InvoiceService(IFacturaEntity iFacturaEntity,
+                          IDetalleFacturaEntity iDetalleFacturaEntity) {
         this.iFacturaEntity = iFacturaEntity;
+        this.iDetalleFacturaEntity = iDetalleFacturaEntity;
     }
 
     @Override
@@ -32,13 +37,35 @@ public class InvoiceService implements IInvoiceService {
         LOGGER.debug("Start register recor new invoice for this national id {}", invoiceGenericRequest.getNationalId());
         var facturaEntity = new FacturaEntity();
 
-        facturaEntity.setValorFactura(invoiceGenericRequest.getInvoiceAmmount());
-        facturaEntity.setDocPagador(invoiceGenericRequest.getNationalId());
-        facturaEntity.setStatus(Optional.of(invoiceGenericRequest.getStatus()).orElse(InvoiceStatus.PENDING.getInvoiceStatusCode()));
-        facturaEntity.setFechaRegistro(new Timestamp(new Date().getTime()));
+       if (!invoiceGenericRequest.getDetailInvoiceGenericList().isEmpty()){
+           LOGGER.debug("Start register record for Invocie by nationalId {} have detail " , invoiceGenericRequest.getNationalId());
+           facturaEntity.setValorFactura(invoiceGenericRequest.getInvoiceAmmount());
+           facturaEntity.setDocPagador(invoiceGenericRequest.getNationalId());
+           facturaEntity.setStatus(Optional.of(invoiceGenericRequest.getStatus()).orElse(InvoiceStatus.PENDING.getInvoiceStatusCode()));
+           facturaEntity.setFechaRegistro(new Timestamp(new Date().getTime()));
 
-        var save = iFacturaEntity.save(facturaEntity);
+           facturaEntity = iFacturaEntity.save(facturaEntity);
 
-        return save.getIdFactura();
+           FacturaEntity finalFacturaEntity = facturaEntity;
+           invoiceGenericRequest.getDetailInvoiceGenericList().forEach(detail -> {
+               var detalleFacturaEntity  = new DetalleFacturaEntity();
+               detalleFacturaEntity.setNumeroFactura(finalFacturaEntity.getIdFactura());
+               detalleFacturaEntity.setObservaciones(detail.getObservations());
+               detalleFacturaEntity.setTipoServicio(detail.getServiceType());
+               iDetalleFacturaEntity.save(detalleFacturaEntity);
+           });
+       } else {
+           LOGGER.debug("Start register record for Invocie by nationalId {} dont have detail " , invoiceGenericRequest.getNationalId());
+           facturaEntity.setValorFactura(invoiceGenericRequest.getInvoiceAmmount());
+           facturaEntity.setDocPagador(invoiceGenericRequest.getNationalId());
+           facturaEntity.setStatus(Optional.of(invoiceGenericRequest.getStatus()).orElse(InvoiceStatus.PENDING.getInvoiceStatusCode()));
+           facturaEntity.setFechaRegistro(new Timestamp(new Date().getTime()));
+
+           facturaEntity = iFacturaEntity.save(facturaEntity);
+       }
+
+
+
+        return facturaEntity.getIdFactura();
     }
 }
