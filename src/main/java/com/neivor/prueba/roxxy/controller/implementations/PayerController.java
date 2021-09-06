@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,7 @@ public class PayerController implements IPayerController {
     }
 
     @Override
+    @PostMapping(path = "/new")
     public ResponseEntity<Object> registerNewPayer(@RequestBody PayerGenericRequest payerRequest) {
         try{
             LOGGER.info("Start process to register Catalog name {}");
