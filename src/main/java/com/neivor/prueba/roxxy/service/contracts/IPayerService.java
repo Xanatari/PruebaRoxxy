@@ -6,4 +6,5 @@ import com.neivor.prueba.roxxy.exceptions.InvoiceNationalIdNotFoundException;
 
 public interface IPayerService {
     int registerPayer(PayerGenericRequest payerRequest) throws InvoiceNationalIdNotFoundException, InvoiceAmmountErrException;
+
 }
