@@ -86,5 +86,26 @@ public class InvoiceController implements IInvoiceController {
     }
 
     }
+    @Override
+    @PutMapping (path = "/status/reverse")
+    public ResponseEntity<Object> reverseInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest ){
+        LOGGER.info("Start update record to new invoice");
+        try{
+            iInvoiceService.reverseInvoice(invoiceGenericRequest);
+
+            return new ResponseEntity<>(gson.toJson(NeivorResponse.builder()
+                    .rc("0")
+                    .msg("OK").
+                            build()
+            ), HttpStatus.OK);
+        } catch ( InvocieNotFoundException invocieNotFoundException){
+            LOGGER.error("Error to register the Payer info ");
+            return new ResponseEntity<>(gson.toJson(invocieNotFoundException), HttpStatus.BAD_REQUEST);
+        }catch (Exception e ){
+            LOGGER.error("Error to register the Payer info ");
+            return new ResponseEntity<>(gson.toJson(new GenericException("Have error plis try again")), HttpStatus.BAD_REQUEST);
+        }
+
+    }
 
 }
