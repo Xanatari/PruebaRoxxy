@@ -8,5 +8,8 @@ public enum InvoiceStatus {
     InvoiceStatus(int invoiceStatus) {
         this.invoiceStatus = invoiceStatus;
     }
-    public int getInvoiceStatusCode(){ return  invoiceStatus;}
+
+    public int getInvoiceStatusCode() {
+        return invoiceStatus;
+    }
 }

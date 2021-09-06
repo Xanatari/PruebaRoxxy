@@ -1,7 +1,7 @@
 package com.neivor.prueba.roxxy.enums;
 
 public enum ServiceType {
-    JACUSII ("1", "Jacussi", "Jacussi de 4 personas comunal");
+    JACUSII("1", "Jacussi", "Jacussi de 4 personas comunal");
 
     String serviceTypeId;
     String serviceTypeName;

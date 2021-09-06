@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Optional;
 
 @Service
@@ -28,8 +27,8 @@ public class InvoiceService implements IInvoiceService {
     @Override
     public void registerRecord(InvoiceGenericRequest invoiceGenericRequest) {
 
-        LOGGER.debug("Start register recor new invoice for this national id {}" , invoiceGenericRequest.getNationalId());
-        var  facturaEntity = new FacturaEntity();
+        LOGGER.debug("Start register recor new invoice for this national id {}", invoiceGenericRequest.getNationalId());
+        var facturaEntity = new FacturaEntity();
 
         facturaEntity.setValorFactura(invoiceGenericRequest.getInvoiceAmmount());
         facturaEntity.setDocPagador(invoiceGenericRequest.getNationalId());

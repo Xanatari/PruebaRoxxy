@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "STATUS_TYPE")
+@Table(name = "STATUS_TYPE", schema = "TestRoxxy")
 public class StatusTypeEntity {
     private int id;
     private String name;
