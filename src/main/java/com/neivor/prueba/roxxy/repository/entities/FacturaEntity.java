@@ -12,7 +12,7 @@ public class FacturaEntity {
     @Column(name = "ID_FACTURA")
     @SequenceGenerator(
             name = "invoice_sequence",
-            sequenceName =  "invoice_sequence",
+            sequenceName = "invoice_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
