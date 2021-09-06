@@ -5,6 +5,8 @@ import com.neivor.prueba.roxxy.controller.contracts.IInvoiceController;
 import com.neivor.prueba.roxxy.dtos.request.InvoiceGenericRequest;
 import com.neivor.prueba.roxxy.dtos.responses.InvocieResponse;
 import com.neivor.prueba.roxxy.dtos.responses.NeivorResponse;
+import com.neivor.prueba.roxxy.exceptions.GenericException;
+import com.neivor.prueba.roxxy.exceptions.InvocieNotFoundException;
 import com.neivor.prueba.roxxy.service.contracts.IInvoiceService;
 import com.sun.istack.NotNull;
 import org.apache.logging.log4j.LogManager;
@@ -64,11 +66,25 @@ public class InvoiceController implements IInvoiceController {
     }
 
     @Override
-    @PutMapping (path = "/status/{invoiceId}")
-    public ResponseEntity<Object> updateInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest,
-                                                  @PathVariable @NotNull int invoiceId) {
-        return null;
+    @PutMapping (path = "/status/pending")
+    public ResponseEntity<Object> updateInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest ){
+        LOGGER.info("Start update record to new invoice");
+        try{
+            iInvoiceService.updateInvoice(invoiceGenericRequest);
+
+        return new ResponseEntity<>(gson.toJson(NeivorResponse.builder()
+                .rc("0")
+                .msg("OK").
+                build()
+        ), HttpStatus.OK);
+    } catch ( InvocieNotFoundException invocieNotFoundException){
+        LOGGER.error("Error to register the Payer info ");
+        return new ResponseEntity<>(gson.toJson(invocieNotFoundException), HttpStatus.BAD_REQUEST);
+    }catch (Exception e ){
+        LOGGER.error("Error to register the Payer info ");
+        return new ResponseEntity<>(gson.toJson(new GenericException("Have error plis try again")), HttpStatus.BAD_REQUEST);
     }
 
+    }
 
 }
