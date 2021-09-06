@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DetailInvoiceGeneric {
     int invoiceNumber;
-    ServiceType serviceType;
+    int serviceType;
     String observations;
 }
