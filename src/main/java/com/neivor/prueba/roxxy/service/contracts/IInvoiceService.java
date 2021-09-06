@@ -4,4 +4,5 @@ import com.neivor.prueba.roxxy.dtos.request.InvoiceGenericRequest;
 
 public interface IInvoiceService {
     int registerRecord(InvoiceGenericRequest invoiceGenericRequest);
+
 }
