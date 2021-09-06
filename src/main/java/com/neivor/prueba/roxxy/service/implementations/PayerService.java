@@ -1,7 +1,9 @@
 package com.neivor.prueba.roxxy.service.implementations;
 
 import com.neivor.prueba.roxxy.dtos.request.PayerGenericRequest;
+import com.neivor.prueba.roxxy.dtos.responses.PayerGenericResponse;
 import com.neivor.prueba.roxxy.enums.InvoiceStatus;
+import com.neivor.prueba.roxxy.exceptions.InvocieNotFoundException;
 import com.neivor.prueba.roxxy.exceptions.InvoiceAmmountErrException;
 import com.neivor.prueba.roxxy.exceptions.InvoiceNationalIdNotFoundException;
 import com.neivor.prueba.roxxy.repository.contracts.IFacturaEntity;
@@ -59,6 +61,32 @@ public class PayerService implements IPayerService {
         }catch (InvoiceAmmountErrException invoiceAmmountErrException){
             LOGGER.error("Error to register the Payer info ");
             throw invoiceAmmountErrException;
+        }
+        catch (Exception e){
+            LOGGER.error("Generic error to register payer info");
+            throw e;
+        }
+    }
+
+    @Override
+    public PayerGenericResponse payerInfo(int invoiceId) throws InvocieNotFoundException{
+        try{
+            LOGGER.info("Strat get Payer detail by InvoiceId");
+            var iFactura = iFacturaEntity.findById(invoiceId);
+            if(!iFactura.isPresent()){
+                LOGGER.error("Error to optain detail for this Invoice id {}", invoiceId);
+                throw new InvocieNotFoundException("Invoice Id not found");
+            }
+            var iPayer = iPagadorEntity.findByDocumentoPagador(iFactura.get().getDocPagador());
+
+            return PayerGenericResponse.builder()
+                    .payerName(iPayer.get().getNombrePagador())
+                    .payerNationalId(iPayer.get().getDocumentoPagador())
+                    .ammount(iPayer.get().getValorFactura())
+                    .build();
+        }catch (InvocieNotFoundException invocieNotFoundException){
+            LOGGER.error("Error to register the Payer info ");
+            throw invocieNotFoundException;
         }
         catch (Exception e){
             LOGGER.error("Generic error to register payer info");
