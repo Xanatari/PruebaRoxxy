@@ -7,4 +7,5 @@ public interface IInvoiceService {
     int registerRecord(InvoiceGenericRequest invoiceGenericRequest);
 
     void updateInvoice(InvoiceGenericRequest invoiceGenericRequest)throws InvocieNotFoundException;
+    void reverseInvoice(InvoiceGenericRequest invoiceGenericRequest)throws InvocieNotFoundException;
 }
