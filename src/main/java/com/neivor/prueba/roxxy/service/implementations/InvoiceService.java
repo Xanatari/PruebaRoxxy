@@ -1,7 +1,9 @@
 package com.neivor.prueba.roxxy.service.implementations;
 
 import com.neivor.prueba.roxxy.dtos.request.InvoiceGenericRequest;
+import com.neivor.prueba.roxxy.dtos.responses.PayerGenericResponse;
 import com.neivor.prueba.roxxy.enums.InvoiceStatus;
+import com.neivor.prueba.roxxy.exceptions.InvocieNotFoundException;
 import com.neivor.prueba.roxxy.repository.contracts.IDetalleFacturaEntity;
 import com.neivor.prueba.roxxy.repository.contracts.IFacturaEntity;
 import com.neivor.prueba.roxxy.repository.entities.DetalleFacturaEntity;
@@ -67,5 +69,29 @@ public class InvoiceService implements IInvoiceService {
 
 
         return facturaEntity.getIdFactura();
+    }
+
+    @Override
+    public void updateInvoice(InvoiceGenericRequest invoiceGenericRequest) throws InvocieNotFoundException{
+        try{
+            LOGGER.info("Strat get Payer detail by InvoiceId");
+            var iFactura = iFacturaEntity.findById(invoiceGenericRequest.getInvoiceId());
+            if(!iFactura.isPresent()){
+                LOGGER.error("Error to optain detail for this Invoice id {}", invoiceGenericRequest.getInvoiceId());
+                throw new InvocieNotFoundException("Invoice Id not found");
+            }
+            var f = iFactura.get();
+
+            f.setStatus(InvoiceStatus.PAY_AND_PENDING_REVIEW.getInvoiceStatusCode());
+            iFacturaEntity.save(f);
+
+        }catch (InvocieNotFoundException invocieNotFoundException){
+            LOGGER.error("Error to register the Payer info ");
+            throw invocieNotFoundException;
+        }
+        catch (Exception e){
+            LOGGER.error("Generic error to register payer info");
+            throw e;
+        }
     }
 }
