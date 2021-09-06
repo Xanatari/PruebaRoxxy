@@ -6,6 +6,7 @@ import com.neivor.prueba.roxxy.dtos.request.InvoiceGenericRequest;
 import com.neivor.prueba.roxxy.dtos.responses.InvocieResponse;
 import com.neivor.prueba.roxxy.dtos.responses.NeivorResponse;
 import com.neivor.prueba.roxxy.service.contracts.IInvoiceService;
+import com.sun.istack.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,4 +62,13 @@ public class InvoiceController implements IInvoiceController {
                 .build()
         ), HttpStatus.OK);
     }
+
+    @Override
+    @PutMapping (path = "/status/{invoiceId}")
+    public ResponseEntity<Object> updateInvoiceId(@RequestBody InvoiceGenericRequest invoiceGenericRequest,
+                                                  @PathVariable @NotNull int invoiceId) {
+        return null;
+    }
+
+
 }
