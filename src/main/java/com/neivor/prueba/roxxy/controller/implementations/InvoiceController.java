@@ -82,7 +82,7 @@ public class InvoiceController implements IInvoiceController {
         return new ResponseEntity<>(gson.toJson(invocieNotFoundException), HttpStatus.BAD_REQUEST);
     }catch (Exception e ){
         LOGGER.error("Error to register the Payer info ");
-        return new ResponseEntity<>(gson.toJson(new GenericException("Have error plis try again")), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(gson.toJson(new GenericException("Have error plis try again")), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     }
