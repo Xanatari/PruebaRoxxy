@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "FACTURA")
-public class FacturaEntity {
+public class  FacturaEntity {
 
     @Id
     @Column(name = "ID_FACTURA")

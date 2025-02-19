@@ -1,7 +1,9 @@
 package com.neivor.prueba.roxxy.service.implementations;
 
+import com.neivor.prueba.roxxy.dtos.request.DetailInvoiceGeneric;
 import com.neivor.prueba.roxxy.repository.contracts.TransaccionRepository;
 import com.neivor.prueba.roxxy.repository.entities.TransaccionEntity;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.dao.TransientDataAccessException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
@@ -28,6 +30,7 @@ public class TransaccionService {
             backoff = @Backoff(delay = 2000)
     )
     @Transactional
+    @CircuitBreaker(name = "externalService", fallbackMethod = "fallbackExternalService")
     public void procesarTransaccion(Long id) {
         // Recupera la transacción con bloqueo pesimista para evitar concurrencia
         TransaccionEntity transaccion = repository.findByIdForUpdate(id)
@@ -61,5 +64,9 @@ public class TransaccionService {
     public void recover(Exception e, Long id) {
         // Implementa lógica de recuperación: notificar, guardar log, alertar, etc.
         System.err.println("No se pudo procesar la transacción " + id + " tras varios intentos: " + e.getMessage());
+    }
+
+    public String fallbackExternalService(DetailInvoiceGeneric data, Throwable t) {
+        return "Servicio externo no disponible temporalmente. Por favor, inténtalo más tarde.";
     }
 }
